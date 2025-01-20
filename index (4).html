@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Style for the button */
+        .video-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Center the button on the page */
+            display: inline-block;
+            width: 300px;
+            height: 300px;
+            background-color: #2c3f4f; /* TRI blue */
+            color: white;
+            text-align: center;
+            line-height: 300px; /* Vertically center the text */
+            font-family: 'Poppins', sans-serif; /* TRI font */
+            font-size: 36px;
+            border: none;
+            border-radius: 50%; /* Circular shape */
+            cursor: pointer;
+            overflow: hidden;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Container for spots (spots will appear as circles) */
+        .spots {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Prevent interfering with button clicks */
+        }
+
+        /* Spot style (light blue ripples) */
+        .spot {
+            position: absolute;
+            border-radius: 50%;
+            background-color: rgba(173, 216, 230, 0.6); /* Light blue */
+            animation: spotEffect 1s ease-out forwards;
+        }
+
+        /* Animation for the spots */
+        @keyframes spotEffect {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.5);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(3);
+                opacity: 0;
+            }
+        }
+
+    </style>
+    <title>Interactive Button with Spots</title>
+</head>
+<body>
+
+    <!-- Circular, blue, very large button with "Pond" text -->
+    <button class="video-button" id="button">
+        Pond
+        <div class="spots" id="spots"></div>
+    </button>
+
+    <script>
+        const button = document.getElementById('button');
+        const spotsContainer = document.getElementById('spots');
+
+        button.addEventListener('mousemove', (e) => {
+            // Get mouse position relative to the button
+            const rect = button.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+
+            // Create a spot element
+            const spot = document.createElement('div');
+            spot.classList.add('spot');
+
+            // Set random size for each spot
+            const size = Math.random() * 20 + 10; // Between 10px and 30px
+            spot.style.width = `${size}px`;
+            spot.style.height = `${size}px`;
+
+            // Position the spot at the mouse location
+            spot.style.left = `${mouseX - size / 2}px`;
+            spot.style.top = `${mouseY - size / 2}px`;
+
+            // Append the spot to the spots container
+            spotsContainer.appendChild(spot);
+
+            // Remove the spot after the animation ends
+            setTimeout(() => {
+                spot.remove();
+            }, 1000); // Duration matches the spot animation
+        });
+    </script>
+
+</body>
+</html>
